@@ -4,127 +4,136 @@ import datetime
 import nltk
 import ssl
 import streamlit as st
-import random 
+import random
 import json
-import ssl
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 
+# SSL context to avoid download issues
 ssl._create_default_https_context = ssl._create_unverified_context
 nltk.data.path.append(os.path.abspath("nltk_data"))
 nltk.download('punkt')
 
+# Load intents file
 with open('intents.json', 'r') as file:
     intents = json.load(file)
 
+# Initialize vectorizer and model
 vectorizer = TfidfVectorizer()
 clf = LogisticRegression(random_state=0, max_iter=10000)
 
-tags=[]
-patterns=[]
+# Prepare training data
+tags = []
+patterns = []
 for intent in intents:
     for pattern in intent['patterns']:
-         tags.append(intent['tag'])
-         patterns.append(pattern)
+        tags.append(intent['tags'])
+        patterns.append(pattern)
 
 x = vectorizer.fit_transform(patterns)
-y= tags
-clf.fit(x,y)
+y = tags
+clf.fit(x, y)
 
-def chatbot(input_text):
-    input_text= vectorizer.transform([input_text])
-    tag = clf.predict(input_text)[0]
-    for intent in intents:
-        if intent['tag']==tag:
-            response=random.choice(intent['responses'])
-            return response
-            
+# Chatbot response function
+def foodiegenie_chatbot(input_text):
+    try:
+        input_text = vectorizer.transform([input_text])
+        tag = clf.predict(input_text)[0]
+        for intent in intents:
+            if intent['tags'] == tag:
+                return random.choice(intent['responses'])
+    except Exception as e:
+        return "I'm sorry, I couldn't understand that. Could you please rephrase?"
 
+# Streamlit enhancements
+counter = 0
 
-counter = 0 
 def main():
     global counter
-    st.title("Intents of Chatbot using NLP")
-    # creating side bar
-    menue=["Home", "Converssation History","About"]
-    choice =st.sidebar.selectbox("Menue",menue)
+    st.title("FoodieGenie Chatbot")
+    
+    # Sidebar menu
+    menu = ["Home", "Conversation History", "About"]
+    choice = st.sidebar.selectbox("Menu", menu)
 
-#Home 
+    # Home
     if choice == "Home":
-        st.write("Welcome to the chatbot . Please type massage and press Enter to start conversatoin")
-
+        st.write("Welcome to FoodieGenie! Please type your query below and press Enter to chat.")
+        
+        # Initialize chat log file if not present
         if not os.path.exists("chat_log.csv"):
-            with open ("chat_log.csv","w",newline='',encoding='utf-8') as csvfile:
+            with open("chat_log.csv", "w", newline='', encoding='utf-8') as csvfile:
                 csv_writer = csv.writer(csvfile)
-                csv_writer.writerow(['User Input','Chatbot Response','Timestamp'])
+                csv_writer.writerow(['User Input', 'Chatbot Response', 'Timestamp'])
 
-        counter+=1
-        user_input= st.text_input("You",key=f"user_input_(counter)")
+        counter += 1
+        user_input = st.text_input("You", key=f"user_input_{counter}")
 
         if user_input:
+            user_input_str = str(user_input).strip()
+            response = foodiegenie_chatbot(user_input_str)
+            st.text_area("FoodieGenie:", value=response, height=120, max_chars=None, key=f"chatbot_{counter}")
 
-    #Convert the user input to a string
-            user_input_str = str(user_input)
+            timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-            response = chatbot(user_input)
-            st.text_area("Chatbot:",value=response, height=120, max_chars=None, key=f"chatbot")
+            with open('chat_log.csv', 'a', newline='', encoding='utf-8') as csvfile:
+                csv_writer = csv.writer(csvfile)
+                csv_writer.writerow([user_input_str, response, timestamp])
 
-    #Get the current timestamp
-            timestamp  = datetime.datetime.now().strftime(f"%Y-%m-%d %H:%M:%S")
-
-    # Save the user input and chatbot response to the chat_log.csv file
-
-            with open('chat_log.csv' ,'a',newline='', encoding='utf-8') as csvfile:
-                 csv_writer = csv.writer(csvfile)
-                 csv_writer.writerow([user_input_str,response,timestamp])
-
-            if response.lower() in ['goodbye','bye']:
-                st.write("Thank you to chatting with me. Have a greate day!")
+            if response.lower() in ['thank you for chatting with me!', 'goodbye', 'bye']:
+                st.write("Thank you for interacting with FoodieGenie! Have a great day!")
                 st.stop()
 
-#Conversatoin History Menu
+    # Conversation History
     elif choice == "Conversation History":
-    #Display the conversation history in a collapsible exander
         st.header("Conversation History")
-#with st.beta_expender("Click to see conversatoin history"):
-        with open ('chat_log.csv','r',encoding='utf-8') as csvfile:
-            csv_reader= csv.reader(csvfile)
-            next(csv_reader) #Skip the header row
-            for row in csv_reader:
-                st.text(f"User: (row[0])")
-                st.text(f"Chatbot: (row[1])")
-                st.text(f"Timestamp: (row[2])")
-                st.text(f"User: (row[3])")
-                st.markdown("---")
+        if os.path.exists('chat_log.csv') and os.path.getsize('chat_log.csv') > 0:
+            with open('chat_log.csv', 'r', encoding='utf-8') as csvfile:
+                csv_reader = csv.reader(csvfile)
+                next(csv_reader)  # Skip header row
+                for row in csv_reader:
+                    st.markdown(f"**User:** {row[0]}")
+                    st.markdown(f"**FoodieGenie:** {row[1]}")
+                    st.markdown(f"**Timestamp:** {row[2]}")
+                    st.markdown("---")
+        else:
+            st.write("No conversation history found yet. Start chatting to create one!")
 
-    elif choice== "About":
-         st.write("The goal of this project to create a chatbot that can understand and resonce on give text")
-         st.subheader("Project Overview:")
+    # About
+    elif choice == "About":
+        st.write("Welcome to FoodieGenie Chatbot!")
+        st.subheader("Project Overview:")
+        st.write("""
+            FoodieGenie is an AI-powered chatbot designed to enhance the guest experience in a 5-star hotel. 
+            It handles dining orders, special requests, and provides general hotel information.
+            Built using Python, Natural Language Processing (NLP), and the Logistic Regression algorithm, 
+            FoodieGenie automates interactions to reduce response times and ensure 24/7 guest support.
+        """)
 
-         st.write("""This chatbot project is a conversational AI system designed to understand and respond to user queries. 
-                Built using Python, Natural Language Processing (NLP) techniques, and the Logistic Regression algorithm, 
-                the chatbot provides a user-friendly interface through the Streamlit web framework.""")
+        st.header("Intents and Features")
+        st.write("Below are the intents the chatbot currently supports:")
+        for intent in intents:
+            st.markdown(f"- **{intent['tag']}**: {intent.get('description', 'No description provided.')}")
+        
+        st.header("Key Achievements")
+        st.subheader("1. Guest Query Handling:")
+        st.write("FoodieGenie effectively processes user queries related to hotel services and dining.")
+        st.subheader("2. NLP Integration:")
+        st.write("Utilizes NLP techniques to understand guest input and generate accurate responses.")
+        st.subheader("3. Dining and Special Requests Automation:")
+        st.write("Handles dining orders and special guest requests efficiently.")
+        st.subheader("4. Streamlit Web Interface:")
+        st.write("Provides an interactive interface for seamless guest interaction.")
 
-         st.header("Key Achievements")
-         st.subheader(" 1. NLP Techniques:")
-         st.write(" This chatbot effectively utilizes NLP techniques to understand user input.")
-         st.subheader(" 2. Logistic Regression Algorithm:")
-         st.write(" The Logistic Regression algorithm is successfully employed to classify user input.")
-         st.subheader(" 3. Streamlit Web Framework:")
-         st.write("The Streamlit web framework provides an intuitive and interactive interface.")
-         st.subheader(" 4. User Input Understanding:")
-         st.write("This chatbot project successfully understands user input.")
-         st.subheader(" 5. Suitable Response Generation:")
-         st.write("The project generates suitable responses to user queries")
-             
-         st.header("Future Scope")
-         st.subheader(" 1. Intent Identification:")
-         st.write(" Incorporating intent identification capabilities will improve the chatbot's understanding of user input")
-         st.subheader(" 2. Emotion Detection:")
-         st.write("Adding emotion detection capabilities will enable the chatbot to understand user emotions.")
-         st.subheader(" 3. Multi-Language Support:")
-         st.write(" Incorporating multi-language support will allow the chatbot to understand user input in various languages.")
+        st.header("Future Scope")
+        st.subheader("1. Advanced Intent Identification:")
+        st.write("Improving intent recognition to better understand complex user queries.")
+        st.subheader("2. Emotion and Sentiment Analysis:")
+        st.write("Integrating emotion detection to provide empathetic responses to guests.")
+        st.subheader("3. Multi-Language Support:")
+        st.write("Adding support for multiple languages to cater to diverse guests.")
+        st.subheader("4. Integration with Hotel Management Systems:")
+        st.write("Connecting with existing hotel systems to automate service delivery.")
 
-if __name__ =='__main__':
+if __name__ == '__main__':
     main()
-
