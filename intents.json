@@ -1,0 +1,45 @@
+[
+    {
+      "tags": "greeting",
+      "patterns": ["Hello", "Hi", "Good evening", "Hey", "How are you?", "Good morning", "Good afternoon"],
+      "response": ["Hello, I am FoodieGenie! How can I assist you with your food order today?","Hello! I'm FoodieGenie, your personal dining assistant. What can I do for you today?",
+"Hi there! Need help with your food order or any special requests? I'm here for you!","Hey! I'm FoodieGenie, ready to make your stay delightful. How can I assist you today?"]
+    },
+    {
+      "tags": "order_food",
+      "patterns": ["I want to order food", "Can I see the menu?", "Give me something to eat","I'm feeling hungry"],
+      "response": ["Sure! What type of food would you like to order today? We have Maharashtrian, Healthy, Junk food, and Sweet dishes.","Sure! What type of food are you craving?",
+                     "What would you like to have? We offer a variety of dishes." ]
+    },
+    {
+      "tags": "select_food",
+      "patterns": ["I want Vada Pav", "Give me Gulab Jamun", "Order Pizza", "I’ll have Sabudana Khichdi","Idli Dosa"],
+      "response": ["You've selected {food_name}. Would you like to customize your order?","Great choice! Your {food_name} is being prepared.",
+                     "Okay, {food_name} is added to your order. Any other requests?"]
+    },
+    {
+      "tags": "special_request",
+      "patterns": ["Make it extra spicy", "No onions please", "I want gluten-free food","Make it less spicy","Make it sugar free"],
+      "response": ["Got it! Your special request has been added.","Your request for customization has been noted.",
+                     "Sure, we’ll prepare it as per your request."]
+    },
+    {
+      "tags": "confirm_order",
+      "patterns": ["Yes, confirm my order", "Place the order", "I’m ready to confirm","Confirm","Order now"],
+      "response":["Your order is confirmed!",
+                     "Order placed successfully!",
+                     "Done! Expect your delicious food soon.","Order Confirmed Successfully !!"]
+    },
+    {
+      "tags": "feedback",
+      "patterns": ["I want to give feedback","Can I provide feedback?","Here’s my feedback","I have a suggestion"],
+      "response": ["We value your feedback! Please let us know what you think.","Thank you for taking the time to provide feedback. We’re listening!" ]
+    },
+    {
+      "tags": "small_talk",
+      "patterns": ["Who are you?","What’s your name?","Tell me a joke","How’s the weather?"],
+      "response": ["I’m FoodieGenie, your friendly assistant for all food-related needs!","I’m here to make your food ordering experience awesome.",
+        "Why don’t chefs trust each other? Because they keep too many secrets!","I’m not sure about the weather, but I can definitely help with your hunger!"]
+    }
+]
+
