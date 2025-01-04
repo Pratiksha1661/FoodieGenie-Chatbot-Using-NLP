@@ -13,7 +13,7 @@ from sklearn.linear_model import LogisticRegression
 # SSL context to avoid download issues
 ssl._create_default_https_context = ssl._create_unverified_context
 nltk.data.path.append(os.path.abspath("nltk_data"))
-nltk.download('punkt')
+nltk.download("punkt")
 
 # Load intents file
 with open('intents.json', 'r') as file:
