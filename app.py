@@ -1,3 +1,4 @@
+pip install --upgrade pip
 import os
 import csv
 import datetime
