@@ -1,9 +1,9 @@
-pip install --upgrade pip
 import os
 import csv
 import datetime
 import nltk
 import ssl
+import pickle 
 import streamlit as st
 import random
 import json
