@@ -42,7 +42,7 @@ def foodiegenie_chatbot(input_text):
         tag = clf.predict(input_text)[0]
         for intent in intents:
             if intent['tags'] == tag:
-                return random.choice(intent['responses'])
+                return random.choice(intent['response'])
     except Exception as e:
         return "I'm sorry, I couldn't understand that. Could you please rephrase?"
 
@@ -114,7 +114,7 @@ def main():
         st.header("Intents and Features")
         st.write("Below are the intents the chatbot currently supports:")
         for intent in intents:
-            st.markdown(f"- **{intent['tag']}**: {intent.get('description', 'No description provided.')}")
+            st.markdown(f"- **{intent['tags']}**: {intent.get('description', 'No description provided.')}")
         
         st.header("Key Achievements")
         st.subheader("1. Guest Query Handling:")
