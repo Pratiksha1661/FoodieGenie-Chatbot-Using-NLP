@@ -56,7 +56,7 @@
         ]
     },
     {
-        "tag": "thanks",
+        "tags": "thanks",
         "patterns": [
             "Thank you",
             "Thanks",
@@ -70,7 +70,7 @@
         ]
     },
     {
-        "tag": "health",
+        "tags": "health",
         "patterns": [
             "How to stay healthy",
             "Tell me about health tips",
@@ -82,7 +82,7 @@
         ]
     },
     {
-        "tag": "cooking",
+        "tags": "cooking",
         "patterns": [
             "Tell me about cooking",
             "What's your favorite dish",
