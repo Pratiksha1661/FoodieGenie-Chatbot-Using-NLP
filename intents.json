@@ -40,6 +40,58 @@
       "patterns": ["Who are you?","What’s your name?","Tell me a joke","How’s the weather?"],
       "response": ["I’m FoodieGenie, your friendly assistant for all food-related needs!","I’m here to make your food ordering experience awesome.",
         "Why don’t chefs trust each other? Because they keep too many secrets!","I’m not sure about the weather, but I can definitely help with your hunger!"]
+    },
+    {
+        "tags": "goodbye",
+        "patterns": [
+            "Bye",
+            "See you later",
+            "Goodbye",
+            "Take care"
+        ],
+        "responses": [
+            "Goodbye",
+            "See you later",
+            "Take care"
+        ]
+    },
+    {
+        "tag": "thanks",
+        "patterns": [
+            "Thank you",
+            "Thanks",
+            "Thanks a lot",
+            "I appreciate it"
+        ],
+        "responses": [
+            "You're welcome",
+            "No problem",
+            "Glad I could help"
+        ]
+    },
+    {
+        "tag": "health",
+        "patterns": [
+            "How to stay healthy",
+            "Tell me about health tips",
+            "What's the importance of fitness"
+        ],
+        "responses": [
+            "To stay healthy, maintain a balanced diet, engage in regular physical activity, get enough sleep, manage stress, and avoid harmful habits.",
+            "Fitness is essential for overall well-being and can improve your mood, energy levels, and longevity."
+        ]
+    },
+    {
+        "tag": "cooking",
+        "patterns": [
+            "Tell me about cooking",
+            "What's your favorite dish",
+            "Cooking tips for beginners"
+        ],
+        "responses": [
+            "Cooking is the art of preparing food, and it allows you to experiment with flavors and create delicious meals.",
+            "For beginners, start with simple recipes, use fresh ingredients, and don't be afraid to try new techniques."
+        ]
     }
 ]
 
