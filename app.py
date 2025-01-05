@@ -9,6 +9,7 @@ import random
 import json
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
+import time
 
 # SSL context to avoid download issues
 ssl._create_default_https_context = ssl._create_unverified_context
