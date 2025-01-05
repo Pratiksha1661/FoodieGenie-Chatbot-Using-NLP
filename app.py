@@ -54,8 +54,10 @@ def main():
     global counter
     st.title("FoodieGenie🤖: Your Wish✨, Our Dish🍽️")
 
-    # Optional: Add an Image or Logo (Small Size)
-    st.image('foodie.png', caption="FoodieGenie - Your Personal Assistant", width=200)
+    # Center the logo
+    col1, col2, col3 = st.columns([1, 3, 1])
+    with col2:
+        st.image('foodie.png', caption="FoodieGenie - Your Personal Assistant", width=200)
 
     # Sidebar menu
     menu = ["Home 🍽", "Conversation History 📂", "About 📝"]
@@ -80,33 +82,35 @@ def main():
                     csv_writer.writerow(['User Input', 'Chatbot Response', 'Timestamp'])
 
             counter += 1
+            # User input bar with submit button
             user_input = st.text_input("You", key=f"user_input_{counter}")
 
-            if user_input:
-                user_input_str = str(user_input).strip()
+            if st.button("Submit 📨"):
+                if user_input:
+                    user_input_str = str(user_input).strip()
 
-                # Typing Animation
-                with st.empty():
-                    st.write("FoodieGenie is typing... 📝")
-                    time.sleep(2)  # Simulate typing delay
+                    # Typing Animation
+                    with st.empty():
+                        st.write("FoodieGenie is typing... 📝")
+                        time.sleep(2)  # Simulate typing delay
 
-                # Get response from chatbot
-                response = foodiegenie_chatbot(user_input_str)
+                    # Get response from chatbot
+                    response = foodiegenie_chatbot(user_input_str)
 
-                # Show the chatbot's response
-                st.text_area("FoodieGenie:", value=response, height=120, max_chars=None, key=f"chatbot_{counter}")
+                    # Show the chatbot's response
+                    st.text_area("FoodieGenie:", value=response, height=120, max_chars=None, key=f"chatbot_{counter}")
 
-                timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-                # Log chat conversation
-                with open('chat_log.csv', 'a', newline='', encoding='utf-8') as csvfile:
-                    csv_writer = csv.writer(csvfile)
-                    csv_writer.writerow([user_input_str, response, timestamp])
+                    # Log chat conversation
+                    with open('chat_log.csv', 'a', newline='', encoding='utf-8') as csvfile:
+                        csv_writer = csv.writer(csvfile)
+                        csv_writer.writerow([user_input_str, response, timestamp])
 
-                # End conversation message
-                if response.lower() in ['thank you for chatting with me!', 'goodbye', 'bye']:
-                    st.write("Thank you for interacting with FoodieGenie! Have a great day! ✨")
-                    st.stop()
+                    # End conversation message
+                    if response.lower() in ['thank you for chatting with me!', 'goodbye', 'bye']:
+                        st.write("Thank you for interacting with FoodieGenie! Have a great day! ✨")
+                        st.stop()
 
     # Conversation History
     elif choice == "Conversation History":
