@@ -100,17 +100,16 @@ def main():
 
         if user_input:
             user_input_str = str(user_input).strip()
+            # Typing Animation
+            with st.empty():
+                st.write("FoodieGenie is typing... 📝")
+                time.sleep(2)  # Simulate typing delay
 
-                # Typing Animation
-                with st.empty():
-                    st.write("FoodieGenie is typing... 📝")
-                    time.sleep(2)  # Simulate typing delay
+            # Get response from chatbot
+            response = foodiegenie_chatbot(user_input_str)
 
-                # Get response from chatbot
-                response = foodiegenie_chatbot(user_input_str)
-
-                # Show the chatbot's response
-                st.text_area("FoodieGenie:", value=response, height=120, max_chars=None, key=f"chatbot_{counter}")
+            # Show the chatbot's response
+            st.text_area("FoodieGenie:", value=response, height=120, max_chars=None, key=f"chatbot_{counter}")
 
             timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
