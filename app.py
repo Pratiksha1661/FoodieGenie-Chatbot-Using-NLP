@@ -42,7 +42,7 @@ def foodiegenie_chatbot(input_text):
         tag = clf.predict(input_text)[0]
         for intent in intents:
             if intent['tags'] == tag:
-                return random.choice(intent['response'])
+                return random.choice(intent['responses'])
     except Exception as e:
         return "I'm sorry, I couldn't understand that. Could you please rephrase?"
 
@@ -51,11 +51,38 @@ counter = 0
 
 def main():
     global counter
-    st.title("FoodieGenie Chatbot")
-    
+    st.title("FoodieGenie🤖: Your Wish✨, Our Dish🍽️")
+    st.write("""
+    Your personal hotel assistant, here to make your stay more comfortable and your dining experience exceptional!  
+    With **FoodieGenie**, simply make a wish and let us handle the rest! 
+    Explore the features below to see how we can assist you.  
+""")
+
+# Features Overview
+st.subheader("Features of FoodieGenie")
+st.write("""
+- **Instant Dining Orders** 🍕: Order your meals with just a few taps.
+- **Room Service Requests** 🛏️: Request extra pillows, towels, or any other service.
+- **Personalized Recommendations** 🤖: Based on your preferences, we suggest the best dishes.
+- **24/7 Availability** 🌙: We're always here to help, no matter the time!
+""")
+
+# Call to Action
+st.write("""
+    **Ready to get started?**  
+    Let **FoodieGenie** assist you right away! 
+    Click on the options in the sidebar to start your experience.
+""")
+
+# Optional: Chatbot Start Button
+if st.button("Start Chatting with FoodieGenie 👨🏻‍🍳"):
+    st.write("Hello! I am FoodieGenie, your personal assistant. How can I help you today?")
+
+# Optional: Add an Image or Logo
+    st.image('foodie.png', caption="FoodieGenie - Your Personal Assistant")
     # Sidebar menu
-    menu = ["Home", "Conversation History", "About"]
-    choice = st.sidebar.selectbox("Menu", menu)
+    menu = ["Home 🍽", "Conversation History 📂", "About 📝"]
+    choice = st.sidebar.selectbox("Menu 🧾", menu)
 
     # Home
     if choice == "Home":
