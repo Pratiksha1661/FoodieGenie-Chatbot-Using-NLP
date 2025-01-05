@@ -110,13 +110,13 @@ def main():
             response = foodiegenie_chatbot(user_input_str)
 
             # Show the chatbot's response
-            st.text_area("FoodieGenie:", value=response, height=120, max_chars=None, key=f"chatbot_{counter}")
+            st.text_area("FoodieGenie:", value=responses, height=120, max_chars=None, key=f"chatbot_{counter}")
 
             timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
             with open('chat_log.csv', 'a', newline='', encoding='utf-8') as csvfile:
                 csv_writer = csv.writer(csvfile)
-                csv_writer.writerow([user_input_str, response, timestamp])
+                csv_writer.writerow([user_input_str, responses, timestamp])
 
             if response.lower() in ['thank you for chatting with me!', 'goodbye', 'bye']:
                 st.write("Thank you for interacting with FoodieGenie! Have a great day! 👋")
