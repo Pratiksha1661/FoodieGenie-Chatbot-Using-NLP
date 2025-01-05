@@ -19,6 +19,14 @@
 
 ---
 
+## 🖼️ Streamlit App Preview
+
+Here’s a sneak peek of the **FoodieGenie** Streamlit interface:
+
+![Streamlit App Preview](streamlit_preview.png)
+
+---
+
 ## 🛠️ Tech Stack
 
 - **Frontend**: [Streamlit](https://foodiegenie-chatbot-using-nlp.streamlit.app/)  
