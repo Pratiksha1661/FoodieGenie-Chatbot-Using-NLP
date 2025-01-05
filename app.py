@@ -42,7 +42,7 @@ def foodiegenie_chatbot(input_text):
         input_text = vectorizer.transform([input_text])
         tag = clf.predict(input_text)[0]
         for intent in intents:
-            if intent['tags'] == tag:
+            if tag in intent['tags']:
                 return random.choice(intent['responses'])
     except Exception as e:
         return "I'm sorry, I couldn't understand that. Could you please rephrase?"
@@ -110,13 +110,13 @@ def main():
             response = foodiegenie_chatbot(user_input_str)
 
             # Show the chatbot's response
-            st.text_area("FoodieGenie:", value=responses, height=120, max_chars=None, key=f"chatbot_{counter}")
+            st.text_area("FoodieGenie:", value=response, height=120, max_chars=None, key=f"chatbot_{counter}")
 
             timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
             with open('chat_log.csv', 'a', newline='', encoding='utf-8') as csvfile:
                 csv_writer = csv.writer(csvfile)
-                csv_writer.writerow([user_input_str, responses, timestamp])
+                csv_writer.writerow([user_input_str, response, timestamp])
 
             if response.lower() in ['thank you for chatting with me!', 'goodbye', 'bye']:
                 st.write("Thank you for interacting with FoodieGenie! Have a great day! 👋")
